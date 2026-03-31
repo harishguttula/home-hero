@@ -49,8 +49,14 @@ const Navbar = () => {
           <a href="#workers" className="block text-sm font-medium text-muted-foreground">For Workers</a>
           <a href="#download" className="block text-sm font-medium text-muted-foreground">Download</a>
           <div className="flex gap-2 pt-2">
-            <Button variant="ghost" size="sm" className="flex-1">Log In</Button>
-            <Button variant="hero" size="sm" className="flex-1">Get Started</Button>
+            {user ? (
+              <Button variant="hero" size="sm" className="flex-1" onClick={() => navigate("/dashboard")}>Dashboard</Button>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" className="flex-1" onClick={() => navigate("/auth")}>Log In</Button>
+                <Button variant="hero" size="sm" className="flex-1" onClick={() => navigate("/auth")}>Get Started</Button>
+              </>
+            )}
           </div>
         </div>
       )}
