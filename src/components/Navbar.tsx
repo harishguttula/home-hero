@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Wrench } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -23,8 +27,14 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm">Log In</Button>
-          <Button variant="hero" size="sm">Get Started</Button>
+          {user ? (
+            <Button variant="hero" size="sm" onClick={() => navigate("/dashboard")}>Dashboard</Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/auth")}>Log In</Button>
+              <Button variant="hero" size="sm" onClick={() => navigate("/auth")}>Get Started</Button>
+            </>
+          )}
         </div>
 
         <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
@@ -39,8 +49,14 @@ const Navbar = () => {
           <a href="#workers" className="block text-sm font-medium text-muted-foreground">For Workers</a>
           <a href="#download" className="block text-sm font-medium text-muted-foreground">Download</a>
           <div className="flex gap-2 pt-2">
-            <Button variant="ghost" size="sm" className="flex-1">Log In</Button>
-            <Button variant="hero" size="sm" className="flex-1">Get Started</Button>
+            {user ? (
+              <Button variant="hero" size="sm" className="flex-1" onClick={() => navigate("/dashboard")}>Dashboard</Button>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" className="flex-1" onClick={() => navigate("/auth")}>Log In</Button>
+                <Button variant="hero" size="sm" className="flex-1" onClick={() => navigate("/auth")}>Get Started</Button>
+              </>
+            )}
           </div>
         </div>
       )}
