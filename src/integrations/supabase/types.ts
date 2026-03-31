@@ -14,7 +14,173 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          address: string
+          category_id: string | null
+          completed_at: string | null
+          created_at: string
+          customer_id: string
+          description: string | null
+          id: string
+          scheduled_at: string | null
+          status: Database["public"]["Enums"]["booking_status"]
+          updated_at: string
+          worker_id: string
+        }
+        Insert: {
+          address: string
+          category_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          customer_id: string
+          description?: string | null
+          id?: string
+          scheduled_at?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+          worker_id: string
+        }
+        Update: {
+          address?: string
+          category_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          customer_id?: string
+          description?: string | null
+          id?: string
+          scheduled_at?: string | null
+          status?: Database["public"]["Enums"]["booking_status"]
+          updated_at?: string
+          worker_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "worker_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+          user_type: Database["public"]["Enums"]["user_type"]
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+          user_type?: Database["public"]["Enums"]["user_type"]
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+          user_type?: Database["public"]["Enums"]["user_type"]
+        }
+        Relationships: []
+      }
+      service_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      worker_profiles: {
+        Row: {
+          bio: string | null
+          category_id: string | null
+          created_at: string
+          experience_years: number | null
+          id: string
+          is_available: boolean | null
+          location: string | null
+          rating: number | null
+          skill: string
+          total_jobs: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bio?: string | null
+          category_id?: string | null
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          is_available?: boolean | null
+          location?: string | null
+          rating?: number | null
+          skill: string
+          total_jobs?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bio?: string | null
+          category_id?: string | null
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          is_available?: boolean | null
+          location?: string | null
+          rating?: number | null
+          skill?: string
+          total_jobs?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "worker_profiles_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +189,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      booking_status:
+        | "pending"
+        | "accepted"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      user_type: "customer" | "worker"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +322,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      booking_status: [
+        "pending",
+        "accepted",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
+      user_type: ["customer", "worker"],
+    },
   },
 } as const
