@@ -63,10 +63,12 @@ const Dashboard = () => {
     fetchBookings();
   }, [user, profile]);
 
-  const updateBookingStatus = async (bookingId: string, status: string) => {
+  const updateBookingStatus = async (bookingId: string, status: "pending" | "accepted" | "in_progress" | "completed" | "cancelled") => {
+    const updateData: Record<string, unknown> = { status };
+    if (status === "completed") updateData.completed_at = new Date().toISOString();
     const { error } = await supabase
       .from("bookings")
-      .update({ status, ...(status === "completed" ? { completed_at: new Date().toISOString() } : {}) })
+      .update(updateData)
       .eq("id", bookingId);
     if (error) {
       toast.error("Failed to update booking");
